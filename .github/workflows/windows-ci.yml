@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: C:\Users\runneradmin\AppData\Roaming\npm-cache
-          key: npm-global-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: npm-global-${{ runner.os }}-visionr
           restore-keys: |
             npm-global-${{ runner.os }}-
 
