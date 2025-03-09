@@ -14,11 +14,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          #cache: 'npm'  # Enables built-in npm cache
+          node-version: '22' 
 
       - name: Create Work Directory
-        run: mkdir C:\work
+        run: |
+          mkdir C:\work
+          cd C:\work
         shell: cmd
 
       - name: Checkout Repository
@@ -28,7 +29,8 @@ jobs:
         run: |
           npm install -g https://github.com/plan-vision/visionr-engine.binary/releases/download/11.0.0-alpha2/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
         shell: cmd
-
-      - name: Compiling the project
+        
+      - name: Compiling the project 
         run: vrs compile
         shell: cmd
+      
