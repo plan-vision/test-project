@@ -1,0 +1,36 @@
+name: Windows CI Build
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest  # Uses Windows 64-bit runner
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' 
+
+      - name: Create Work Directory
+        run: |
+          mkdir C:\git
+          cd C:\git
+        shell: cmd
+
+      - name: Install Global Package
+        run: npm install -g https://github.com/plan-vision/test-project/releases/download/test/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
+        shell: cmd
+
+      - name: TEST VR
+        run: vr
+        shell: cmd
+
+      
