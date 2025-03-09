@@ -14,22 +14,38 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' 
+          node-version: '22'
+          cache: 'npm'  # Enables built-in npm cache
 
       - name: Create Work Directory
-        run: |
-          mkdir C:\work
-          cd C:\work
+        run: mkdir C:\work
         shell: cmd
 
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache npm Global Modules
+        uses: actions/cache@v4
+        with:
+          path: C:\Users\runneradmin\AppData\Roaming\npm-cache
+          key: npm-global-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-global-${{ runner.os }}-
+
       - name: Install Global Package
-        run: npm install -g https://github.com/plan-vision/test-project/releases/download/test/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
+        run: |
+          npm cache verify
+          npm install -g https://github.com/plan-vision/visionr-engine.binary/releases/download/11.0.0-alpha2/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
         shell: cmd
 
-      - name: Compiling the project 
+      - name: Cache Installed Global Package
+        uses: actions/cache@v4
+        with:
+          path: C:\Users\runneradmin\AppData\Roaming\npm
+          key: npm-installed-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-installed-${{ runner.os }}-
+
+      - name: Compiling the project
         run: vrs compile
         shell: cmd
-      
