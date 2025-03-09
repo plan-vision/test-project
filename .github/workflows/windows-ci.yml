@@ -11,9 +11,6 @@ jobs:
     runs-on: windows-latest  # Uses Windows 64-bit runner
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -21,16 +18,18 @@ jobs:
 
       - name: Create Work Directory
         run: |
-          mkdir C:\git
-          cd C:\git
+          mkdir C:\work
+          cd C:\work
         shell: cmd
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Install Global Package
         run: npm install -g https://github.com/plan-vision/test-project/releases/download/test/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
         shell: cmd
 
-      - name: TEST VR
-        run: vr
+      - name: Compiling the project 
+        run: vrs compile
         shell: cmd
-
       
