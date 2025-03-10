@@ -3,18 +3,32 @@ name: Windows CI Build
 on:
   push:
     branches:
-      - main  # Change this to your main branch
+      - main
   pull_request:
 
 jobs:
   build:
-    runs-on: windows-latest  # Uses Windows 64-bit runner
+    runs-on: windows-latest
 
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' 
+          node-version: 'lastest'
+
+      # 1) Restore the global npm folder from cache
+      - name: Restore Global NPM Cache
+        uses: actions/cache@v4
+        with:
+          # Cache both "node_modules" and "bin" under Roaming\npm
+          path: |
+            C:/Users/runneradmin/AppData/Roaming/npm/node_modules
+            C:/Users/runneradmin/AppData/Roaming/npm/bin
+          # Include the package version in the key so that
+          # any version change busts the cache automatically.
+          key: ${{ runner.os }}-visionrengine-11.0.0-alpha2
+          restore-keys: |
+            ${{ runner.os }}-visionrengine-
 
       - name: Create Work Directory
         run: |
@@ -25,12 +39,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Global Package
+      - name: Install VisionR-Engine Globally
         run: |
+          echo Installing VisionR-Engine globally...
           npm install -g https://github.com/plan-vision/visionr-engine.binary/releases/download/11.0.0-alpha2/visionr-engine-NPM-package-11.0.0-alpha2.tar.gz
         shell: cmd
-        
-      - name: Compiling the project 
+
+      - name: Compiling the project
         run: vrs compile
         shell: cmd
-      
